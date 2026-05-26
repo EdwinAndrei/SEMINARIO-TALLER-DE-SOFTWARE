@@ -1,0 +1,58 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+  color: #222;
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ---- Header ---- */
+header {
+  background: #1a1a2e;
+  color: #fff;
+  padding: .75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.site-title { font-size: 1.2rem; font-weight: 700; }
+nav ul { list-style: none; display: flex; gap: 1rem; }
+nav a { color: #ccc; text-decoration: none; font-size: .9rem; }
+nav a:hover { color: #fff; }
+
+/* ---- Main ---- */
+main { flex: 1; padding: 2rem 1.5rem; max-width: 1100px; width: 100%; margin: 0 auto; }
+
+/* ---- Hero ---- */
+.hero { padding: 3rem 0; }
+.hero h1 { font-size: 2rem; margin-bottom: .5rem; }
+
+/* ---- Error page ---- */
+.error-page { text-align: center; padding: 4rem 0; }
+.error-page h1 { font-size: 5rem; color: #ccc; }
+.error-page p { margin: 1rem 0; }
+.error-page a { color: #1a1a2e; }
+.error-page pre { text-align: left; background: #eee; padding: 1rem; margin-top: 1rem; overflow: auto; }
+
+/* ---- Footer ---- */
+footer { background: #1a1a2e; color: #888; text-align: center; padding: .75rem; font-size: .8rem; }
+
+/* ---- Forms ---- */
+form { max-width: 420px; }
+label { display: block; font-size: .85rem; margin-bottom: .25rem; margin-top: .75rem; }
+input[type=text], input[type=email], input[type=password] {
+  width: 100%; padding: .5rem .75rem; border: 1px solid #ccc;
+  border-radius: 4px; font-size: 1rem;
+}
+button, input[type=submit] {
+  margin-top: 1rem; padding: .55rem 1.25rem;
+  background: #1a1a2e; color: #fff; border: none; border-radius: 4px;
+  cursor: pointer; font-size: 1rem;
+}
+button:hover { background: #16213e; }
+.form-error { color: #c00; font-size: .85rem; margin-top: .5rem; }
