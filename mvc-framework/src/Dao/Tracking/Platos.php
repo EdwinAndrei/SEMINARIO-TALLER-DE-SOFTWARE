@@ -37,30 +37,43 @@ class Platos extends Table
             WHERE platoId = :platoId;
         ";
 
-        return self::obtenerUnRegistro(
-            $sqlstr,
-            ["platoId" => $platoId]
-        );
+        return self::obtenerUnRegistro($sqlstr, [
+            "platoId" => $platoId
+        ]);
     }
 
-
-    public static function reducirStock(
-        int $platoId,
-        int $cantidad
-    ) {
+    /**
+     * Reducir stock al hacer pedido
+     */
+    public static function reducirStock(int $platoId, int $cantidad)
+    {
         $sqlstr = "
-        UPDATE platos
-        SET platoStock = platoStock - :cantidad
-        WHERE platoId = :platoId
-        AND platoStock >= :cantidad;
-    ";
+            UPDATE platos
+            SET platoStock = platoStock - :cantidad
+            WHERE platoId = :platoId
+            AND platoStock >= :cantidad;
+        ";
 
-        return self::executeNonQuery(
-            $sqlstr,
-            [
-                "platoId" => $platoId,
-                "cantidad" => $cantidad
-            ]
-        );
+        return self::executeNonQuery($sqlstr, [
+            "platoId" => $platoId,
+            "cantidad" => $cantidad
+        ]);
+    }
+
+    /**
+     * Aumentar stock (cancelación de pedido)
+     */
+    public static function aumentarStock(int $platoId, int $cantidad)
+    {
+        $sqlstr = "
+            UPDATE platos
+            SET platoStock = platoStock + :cantidad
+            WHERE platoId = :platoId;
+        ";
+
+        return self::executeNonQuery($sqlstr, [
+            "platoId" => $platoId,
+            "cantidad" => $cantidad
+        ]);
     }
 }
