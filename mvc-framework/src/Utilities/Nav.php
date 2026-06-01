@@ -4,46 +4,62 @@ namespace Utilities;
 
 class Nav
 {
-    private function __construct() {}
-    private function __clone() {}
-
-    public static function setPublicNavContext(): void
+    public static function setPublicNavContext()
     {
-        if (Context::getContextByKey('PUBLIC_NAVIGATION') !== '') {
-            return;
+        $tmpNAVIGATION = Context::getContextByKey("PUBLIC_NAVIGATION");
+        if ($tmpNAVIGATION === "") {
+            $navigationData = self::getNavFromJson()["public"];
+            $saveToSession = intval(Context::getContextByKey("DEVELOPMENT")) !== 1;
+            Context::setContext("PUBLIC_NAVIGATION", $navigationData, $saveToSession);
         }
-        $data = self::loadJson()['public'] ?? [];
-        Context::setContext('PUBLIC_NAVIGATION', $data);
+    }
+    public static function setNavContext()
+    {
+        $tmpNAVIGATION = Context::getContextByKey("NAVIGATION");
+        if ($tmpNAVIGATION === "") {
+            $tmpNAVIGATION = [];
+            $userID = Security::getUserId();
+            $navigationData = self::getNavFromJson()["private"];
+            foreach ($navigationData as $navEntry) {
+                if (Security::isAuthorized($userID, $navEntry["id"], 'MNU')) {
+                    $tmpNAVIGATION[] = $navEntry;
+                }
+            }
+            $saveToSession = intval(Context::getContextByKey("DEVELOPMENT")) !== 1;
+            Context::setContext("NAVIGATION", $tmpNAVIGATION, $saveToSession);
+        }
     }
 
-    public static function setNavContext(): void
+    public static function invalidateNavData()
     {
-        if (Context::getContextByKey('NAVIGATION') !== '') {
-            return;
-        }
-        $data = self::loadJson()['private'] ?? [];
-        Context::setContext('NAVIGATION', $data);
+        Context::removeContextByKey("NAVIGATION_DATA");
+        Context::removeContextByKey("NAVIGATION");
+        Context::removeContextByKey("PUBLIC_NAVIGATION");
     }
 
-    public static function invalidate(): void
+    private static function getNavFromJson()
     {
-        Context::removeContextByKey('NAVIGATION');
-        Context::removeContextByKey('PUBLIC_NAVIGATION');
-        Context::removeContextByKey('NAV_JSON');
+        $jsonContent = Context::getContextByKey("NAVIGATION_DATA");
+        if ($jsonContent === "") {
+            $filePath = 'nav.config.json';
+            if (!file_exists($filePath)) {
+                throw new \Exception(sprintf('%s does not exist', $filePath));
+            }
+            if (!is_readable($filePath)) {
+                throw new \Exception(sprintf('%s file is not readable', $filePath));
+            }
+            $jsonContent = file_get_contents($filePath);
+            $saveToSession = intval(Context::getContextByKey("DEVELOPMENT")) !== 1;
+            Context::setContext("NAVIGATION_DATA", $jsonContent, $saveToSession);
+        }
+        $jsonData = json_decode($jsonContent, true);
+        return $jsonData;
     }
 
-    private static function loadJson(): array
+    private function __construct()
     {
-        $cached = Context::getContextByKey('NAV_JSON');
-        if ($cached !== '') {
-            return json_decode($cached, true);
-        }
-        $path = __DIR__ . '/../../nav.config.json';
-        if (!file_exists($path)) {
-            throw new \RuntimeException("nav.config.json not found");
-        }
-        $json = file_get_contents($path);
-        Context::setContext('NAV_JSON', $json);
-        return json_decode($json, true);
+    }
+    private function __clone()
+    {
     }
 }

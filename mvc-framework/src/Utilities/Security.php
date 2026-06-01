@@ -2,38 +2,65 @@
 
 namespace Utilities;
 
-class Security
-{
-    private function __construct() {}
-    private function __clone() {}
-
-    public static function login(int $userId, string $userName, string $userEmail): void
+use Dao\Security\Security as DaoSecurity;
+class Security {
+    private function __construct()
     {
-        $_SESSION['login'] = [
-            'isLogged'  => true,
-            'userId'    => $userId,
-            'userName'  => $userName,
-            'userEmail' => $userEmail,
-        ];
+        
     }
-
-    public static function logout(): void
+    private function __clone()
     {
-        unset($_SESSION['login']);
+        
     }
-
-    public static function isLogged(): bool
+    public static function logout()
     {
-        return !empty($_SESSION['login']['isLogged']);
+        unset($_SESSION["login"]);
     }
-
-    public static function getUser(): array|false
+    public static function login($userId, $userName, $userEmail)
     {
-        return $_SESSION['login'] ?? false;
+        $_SESSION["login"] = array(
+            "isLogged" => true,
+            "userId" => $userId,
+            "userName" => $userName,
+            "userEmail" => $userEmail
+        );
     }
-
-    public static function getUserId(): int
+    public static function isLogged():bool
     {
-        return (int) ($_SESSION['login']['userId'] ?? 0);
+        return isset($_SESSION["login"]) && $_SESSION["login"]["isLogged"];
+    }
+    public static function getUser()
+    {
+        if (isset($_SESSION["login"])) {
+            return $_SESSION["login"];
+        }
+        return false;
+    }
+    public static function getUserId()
+    {
+        if (isset($_SESSION["login"])) {
+            return $_SESSION["login"]["userId"];
+        }
+        return 0;
+    }
+    public static function isAuthorized($userId, $function, $type = 'FNC'):bool
+    {
+        if (\Utilities\Context::getContextByKey("DEVELOPMENT") == "1") {
+            $functionInDb = DaoSecurity::getFeature($function);
+            if (!$functionInDb) {
+                DaoSecurity::addNewFeature($function, $function, "ACT", $type);
+            }
+        }
+        return DaoSecurity::getFeatureByUsuario($userId, $function);
+    }
+    public static function isInRol($userId, $rol):bool
+    {
+        if (\Utilities\Context::getContextByKey("DEVELOPMENT") == "1") {
+            $rolInDb = DaoSecurity::getRol($rol);
+            if (!$rolInDb) {
+                DaoSecurity::addNewRol($rol, $rol, "ACT");
+            }
+        }
+        return DaoSecurity::isUsuarioInRol($userId, $rol);
     }
 }
