@@ -14,6 +14,9 @@ class MisPedidos extends PublicController
     public function run(): void
     {
         $usercod = Security::getUserId();
+        if ($usercod <= 0) {
+            $usercod = 1; // ID del "Cliente Demo"
+        }
 
         $this->pedidos = PedidosDAO::getPedidosByUser($usercod);
 
@@ -21,30 +24,43 @@ class MisPedidos extends PublicController
 
             switch ($pedido["pedidoEstado"]) {
 
-                case "pendiente":
+                case "PEN":
                     $pedido["pedidoEstadoDsc"] = "Pendiente";
+                    $pedido["estadoClass"] = "estado-pendiente";
+                    $pedido["puedeCancelar"] = true;
                     break;
 
-                case "en_proceso":
+                case "PRO":
                     $pedido["pedidoEstadoDsc"] = "En Proceso";
+                    $pedido["estadoClass"] = "estado-proceso";
+                    $pedido["puedeCancelar"] = false;
                     break;
 
-                case "listo":
+                case "LIS":
                     $pedido["pedidoEstadoDsc"] = "Listo";
+                    $pedido["estadoClass"] = "estado-listo";
+                    $pedido["puedeCancelar"] = false;
                     break;
 
-                case "entregado":
+                case "ENT":
                     $pedido["pedidoEstadoDsc"] = "Entregado";
+                    $pedido["estadoClass"] = "estado-entregado";
+                    $pedido["puedeCancelar"] = false;
                     break;
 
-                case "cancelado":
+                case "CAN":
                     $pedido["pedidoEstadoDsc"] = "Cancelado";
+                    $pedido["estadoClass"] = "estado-cancelado";
+                    $pedido["puedeCancelar"] = false;
                     break;
 
                 default:
                     $pedido["pedidoEstadoDsc"] = $pedido["pedidoEstado"];
+                    $pedido["puedeCancelar"] = false;
             }
         }
+
+        $pedido["puedeCancelar"] = ($pedido["pedidoEstado"] === "PEN");
 
         Renderer::render(
             "tracking/mispedidos",
