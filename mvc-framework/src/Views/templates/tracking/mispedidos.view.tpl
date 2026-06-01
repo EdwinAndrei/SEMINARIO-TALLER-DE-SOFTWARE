@@ -2,40 +2,71 @@
 
 <section class="WWList">
 
-<table class="caps-products-table">
+    <table class="caps-products-table">
 
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Plato</th>
-            <th>Cantidad</th>
-            <th>Estado</th>
-            <th>Fecha</th>
-        </tr>
-    </thead>
+        <thead>
+            <tr>
+                <th>Acción</th>
+                <th>ID</th>
+                <th>Plato</th>
+                <th>Cantidad</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
 
-    <tbody>
+        <tbody>
 
-        {{foreach pedidos}}
+            {{foreach pedidos}}
 
-        <tr>
+            <tr>
+                <td>
+                    {{if puedeCancelar}}
+                    <form action="index.php?page=Tracking_CancelarPedido" method="POST">
+                        <input type="hidden" name="pedidoId" value="{{pedidoId}}" />
 
-            <td>{{pedidoId}}</td>
+                        <button type="submit">
+                            Cancelar
+                        </button>
+                    </form>
+                    {{endif puedeCancelar}}
+                </td>
 
-            <td>{{platoNombre}}</td>
+                <td>{{pedidoId}}</td>
 
-            <td>{{pedidoCantidad}}</td>
+                <td>{{platoNombre}}</td>
 
-            <td>{{pedidoEstadoDsc}}</td>
+                <td>{{cantidad}}</td>
 
-            <td>{{pedidoFecha}}</td>
+                <td class="{{estadoClass}}">
+                    {{pedidoEstadoDsc}}
+                </td>
 
-        </tr>
+                <td>{{pedidoFecha}}</td>
 
-        {{endfor pedidos}}
+            </tr>
 
-    </tbody>
+            {{endfor pedidos}}
 
-</table>
+        </tbody>
 
+    </table>
+
+
+    <div class="row my-4 flex-end">
+        <button type="button" id="btnRegresar" class="caps-secondary-btn">
+            Regresar
+        </button>
+    </div>
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("btnRegresar")
+            .addEventListener("click", () => {
+                window.location.assign(
+                    "index.php?page=Tracking_Menu"
+                );
+            });
+    });
+</script>
