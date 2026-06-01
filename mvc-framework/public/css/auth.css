@@ -1,0 +1,112 @@
+.caps-auth-wrapper {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #f4f8fc, #eaf1fb);
+}
+
+.caps-auth-card {
+    width: 100%;
+    max-width: 480px;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    border: 1px solid #e7edf5;
+}
+
+.caps-auth-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.caps-auth-header h1 {
+    margin: 0 0 0.5rem 0;
+    color: #173f7a;
+    font-size: 2rem;
+}
+
+.caps-auth-header p {
+    margin: 0;
+    color: #5f6b7a;
+    font-size: 0.95rem;
+}
+
+.caps-form-group {
+    margin-bottom: 1rem;
+}
+
+.caps-form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: #173f7a;
+}
+
+.caps-form-group input {
+    width: 100%;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid #cfd9e6;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: 0.2s ease;
+}
+
+.caps-form-group input:focus {
+    border-color: #1d4f91;
+    box-shadow: 0 0 0 3px rgba(29, 79, 145, 0.12);
+}
+
+.caps-auth-btn {
+    width: 100%;
+    background: #173f7a;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.95rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+    margin-top: 0.5rem;
+}
+
+.caps-auth-btn:hover {
+    background: #0f2f5d;
+}
+
+.caps-auth-footer {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #5f6b7a;
+}
+
+.caps-auth-footer a {
+    color: #173f7a;
+    font-weight: 700;
+    text-decoration: none;
+    margin-left: 0.25rem;
+}
+
+.caps-auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.caps-error {
+    color: #b42318;
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+}
+
+.caps-error-box {
+    background: #fdecec;
+    border: 1px solid #f5c2c7;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}

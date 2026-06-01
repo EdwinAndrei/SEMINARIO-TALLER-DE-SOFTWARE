@@ -1,3 +1,284 @@
+html,
 body {
-  background-color: #fff !important;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+main {
+  padding: 0px;
+}
+
+.home-page {
+  margin: -1em;
+}
+
+.herocontainer {
+  margin: -1rem -1rem 0px -1rem;
+}
+
+.hero {
+  display: flex;
+  width: 100%;
+  height: 90vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.action {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: rgba(26, 58, 107, 0.80);
+  color: #ffffff;
+  text-align: center;
+}
+
+.action h1 {
+  font-size: 3rem;
+  margin: 0px;
+  letter-spacing: 0.1em;
+}
+
+.action h2 {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin: 0.5rem 0px 1rem 0px;
+  color: #a8c4f0;
+}
+
+.action p {
+  font-size: 0.95rem;
+  max-width: 600px;
+  line-height: 1.6;
+  color: #d0e4ff;
+  margin: 0px;
+}
+
+/* ===================== HOME SECTIONS ===================== */
+
+.home-section {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.home-section-title {
+  font-size: 2rem;
+  color: var(--primary_text);
+  margin-bottom: 2.5rem;
+}
+
+/* CARDS */
+
+.home-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto 2rem auto;
+}
+
+.home-card {
+  background-color: #f4f8ff;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid #d9e1ec;
+}
+
+.home-card-icon {
+  font-size: 2.5rem;
+  color: #e07b39;
+  margin-bottom: 1rem;
+}
+
+.home-card h3 {
+  color: #1a3a6b;
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.home-card p {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.home-card-cta {
+  background-color: #1a3a6b;
+  color: #ffffff;
+  border: none;
+}
+
+.home-card-cta h3 {
+  color: #ffffff;
+}
+
+.home-card-cta p {
+  color: #d0e4ff;
+}
+
+.home-card-cta .home-card-icon {
+  color: #ffffff;
+}
+
+.home-cta-btn {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #e07b39;
+  color: #ffffff;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.25s ease;
+}
+
+.home-cta-btn:hover {
+  background-color: #c5622a;
+  color: #ffffff;
+}
+
+/* SOBRE NOSOTROS */
+
+.home-about {
+  display: flex;
+  flex-direction: column;
+  background-color: #1a3a6b;
+  color: #ffffff;
+}
+
+.home-about-img {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.home-about-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-about-text {
+  padding: 3rem 2rem;
+}
+
+.home-about-text h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+
+.home-about-text p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #d0e4ff;
+  margin-bottom: 1rem;
+}
+
+/* CONTACTO */
+
+.home-contact {
+  background-color: #f4f8ff;
+}
+
+.home-contact-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.home-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background-color: #ffffff;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #d9e1ec;
+  text-align: left;
+}
+
+.home-contact-item i {
+  font-size: 1.5rem;
+  color: #e07b39;
+  width: 2rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.home-contact-item h4 {
+  color: #1a3a6b;
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.home-contact-item p {
+  color: #555;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+@media (min-width: 568px) {
+  .hero {
+    height: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .home-cards {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .home-card {
+    flex: 1 1 calc(50% - 1.5rem);
+  }
+
+  .home-about {
+    flex-direction: row;
+  }
+
+  .home-about-img {
+    width: 40%;
+    height: auto;
+    max-height: 450px;
+  }
+
+  .home-about-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .home-about-text {
+    width: 60%;
+    padding: 4rem 3rem;
+  }
+
+  .home-contact-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .home-contact-item {
+    flex: 1 1 calc(50% - 1.5rem);
+  }
 }
