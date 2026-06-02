@@ -1,17 +1,67 @@
-<section>
-  <h2>Sign In</h2>
+<section class="auth-wrapper">
 
-  {{if error}}
-  <p class="form-error">{{error}}</p>
-  {{endif error}}
+    <div class="auth-card">
 
-  <form method="POST" action="index.php?page=Sec.Login">
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" required autofocus>
+        <div class="auth-header">
+            <h1>Restaurante</h1>
+            <p>
+                Inicia sesión para gestionar tus pedidos.
+            </p>
+        </div>
 
-    <label for="passwd">Password</label>
-    <input type="password" id="passwd" name="passwd" required>
+        <form method="post">
 
-    <button type="submit">Sign In</button>
-  </form>
+            <div class="auth-group">
+                <label for="email">
+                    Correo Electrónico
+                </label>
+
+                <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value="{{email}}"
+                    placeholder="correo@ejemplo.com"
+                    required
+                >
+            </div>
+
+            <div class="auth-group">
+                <label for="passwd">
+                    Contraseña
+                </label>
+
+                <input
+                    id="passwd"
+                    type="password"
+                    name="passwd"
+                    placeholder="Ingrese su contraseña"
+                    required
+                >
+            </div>
+
+            {{if error}}
+            <div class="auth-error">
+                {{error}}
+            </div>
+            {{endif error}}
+
+            <button
+                type="submit"
+                class="auth-btn"
+            >
+                Iniciar Sesión
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+            <span>¿No tienes cuenta?</span>
+            <a href="index.php?page=Sec.Register">
+                Crear cuenta
+            </a>
+        </div>
+
+    </div>
+
 </section>
