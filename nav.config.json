@@ -4,7 +4,12 @@
             "id": "Menu_Home",
             "nav_url": "index.php?page=Index",
             "nav_label": "Home"
+        },        
+        {
+            "id": "Menu_Cocina",
+            "nav_url": "index.php?page=Cocina.Cocina",
+            "nav_label": "Cocina"
         }
     ],
-    "private": []
+    "private": [    ]
 }
