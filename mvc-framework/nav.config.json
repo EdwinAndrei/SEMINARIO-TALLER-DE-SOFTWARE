@@ -1,0 +1,10 @@
+{
+    "public": [
+        {
+            "id": "Menu_Home",
+            "nav_url": "index.php?page=Index",
+            "nav_label": "Home"
+        }
+    ],
+    "private": []
+}
