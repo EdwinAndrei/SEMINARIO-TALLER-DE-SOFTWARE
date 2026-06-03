@@ -1,12 +1,12 @@
 <?php
-
+ 
 namespace Utilities;
-
+ 
 class Nav
 {
     private function __construct() {}
     private function __clone() {}
-
+ 
     public static function setPublicNavContext(): void
     {
         if (Context::getContextByKey('PUBLIC_NAVIGATION') !== '') {
@@ -15,23 +15,31 @@ class Nav
         $data = self::loadJson()['public'] ?? [];
         Context::setContext('PUBLIC_NAVIGATION', $data);
     }
-
+ 
     public static function setNavContext(): void
     {
         if (Context::getContextByKey('NAVIGATION') !== '') {
             return;
         }
+ 
+        $rol  = Security::getUserRole();
         $data = self::loadJson()['private'] ?? [];
+ 
+        $data = array_values(array_filter($data, function($item) use ($rol) {
+            if (!isset($item['roles'])) return true;
+            return in_array($rol, $item['roles'], true);
+        }));
+ 
         Context::setContext('NAVIGATION', $data);
     }
-
+ 
     public static function invalidate(): void
     {
         Context::removeContextByKey('NAVIGATION');
         Context::removeContextByKey('PUBLIC_NAVIGATION');
         Context::removeContextByKey('NAV_JSON');
     }
-
+ 
     private static function loadJson(): array
     {
         $cached = Context::getContextByKey('NAV_JSON');
@@ -47,3 +55,4 @@ class Nav
         return json_decode($json, true);
     }
 }
+ 

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{SITE_TITLE}}</title>
   <link rel="stylesheet" href="{{BASE_DIR}}/public/css/global.css" />
+  <link rel="stylesheet" href="{{BASE_DIR}}public/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   {{foreach SiteLinks}}
     <link rel="stylesheet" href="{{~BASE_DIR}}/{{this}}" />
@@ -25,7 +26,7 @@
     <span class="site-title">{{SITE_TITLE}}</span>
     <nav role="navigation" aria-label="Menú de usuario">
       <ul>
-        <li><a href="index.php?page=Home_Home"><i class="fas fa-home"></i>&nbsp;Inicio</a></li>
+       <li><a href="index.php?page=Index"><i class="fas fa-home"></i>&nbsp;Inicio</a></li>
         {{foreach NAVIGATION}}
           <li><a href="{{nav_url}}">{{nav_label}}</a></li>
         {{endfor NAVIGATION}}

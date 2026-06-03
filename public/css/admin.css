@@ -230,3 +230,9 @@
 .admin-back:hover {
   color: #f9be5a;
 }
+main {
+    max-width: 1200px;
+}
+.admin-page {
+    padding-top: 2rem;
+}

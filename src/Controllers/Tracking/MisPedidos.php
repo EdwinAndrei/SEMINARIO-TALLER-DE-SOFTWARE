@@ -2,28 +2,24 @@
  
 namespace Controllers\Tracking;
  
-use Controllers\PublicController;
+use Controllers\PrivateController;
 use Dao\Tracking\Pedidos as PedidosDAO;
 use Utilities\Security;
-use Utilities\Site;
 use Views\Renderer;
  
-class MisPedidos extends PublicController
+class MisPedidos extends PrivateController
 {
     private array $pedidos = [];
  
     public function run(): void
     {
-        $usuario_id = Security::getUserId();
+        $this->requireAuth(true);
  
-        if ($usuario_id <= 0) {
-            $usuario_id = 3;
-        }
+        $usuario_id = Security::getUserId();
  
         $this->pedidos = PedidosDAO::getPedidosByUser($usuario_id);
  
         foreach ($this->pedidos as &$pedido) {
- 
             $pedido["total"] = number_format(
                 (float)$pedido["cantidad"] * (float)$pedido["precio"], 2
             );
@@ -61,11 +57,10 @@ class MisPedidos extends PublicController
             }
         }
  
-        Site::addLink('public/css/style.css');
- 
         Renderer::render(
             "tracking/mispedidos",
             ["pedidos" => $this->pedidos]
         );
     }
 }
+ 
