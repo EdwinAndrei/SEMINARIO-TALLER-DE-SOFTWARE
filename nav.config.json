@@ -1,15 +1,32 @@
 {
     "public": [
-        {
+      {
             "id": "Menu_Home",
             "nav_url": "index.php?page=Index",
             "nav_label": "Home"
-        },        
+        },
         {
             "id": "Menu_Cocina",
             "nav_url": "index.php?page=Cocina.Cocina",
             "nav_label": "Cocina"
+        },
+        {
+            "id": "Menu_Tracking",
+            "nav_url": "index.php?page=Tracking_Menu",
+            "nav_label": "Menú"
+        },
+           {
+            "id": "Menu_MisPedidos",
+            "nav_url": "index.php?page=Tracking_MisPedidos",
+            "nav_label": "Mis Pedidos"
         }
     ],
-    "private": [    ]
+    "private": [ 
+
+      {
+        "id": "Menu_Admin",
+        "nav_url": "index.php?page=Admin.Admin",
+        "nav_label": "Admin"
+    }
+       ]
 }

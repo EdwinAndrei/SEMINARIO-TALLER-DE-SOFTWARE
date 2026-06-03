@@ -40,9 +40,7 @@ class Platos extends Table
 
         return self::obtenerUnRegistro(
             $sqlstr,
-            [
-                "id" => $id
-            ]
+            ['id' => $id]
         );
     }
 
@@ -50,20 +48,17 @@ class Platos extends Table
         int $id,
         int $cantidad
     ) {
-        $sqlstr = "
+        $conn = self::getConn();
+        $stmt = $conn->prepare("
             UPDATE platos
             SET stock = stock - :cantidad
             WHERE id = :id
-            AND stock >= :cantidad;
-        ";
-
-        return self::executeNonQuery(
-            $sqlstr,
-            [
-                "id" => $id,
-                "cantidad" => $cantidad
-            ]
-        );
+            AND stock >= :cantidad2
+        ");
+        $stmt->bindParam(':id',        $id,      \PDO::PARAM_INT);
+        $stmt->bindParam(':cantidad',  $cantidad, \PDO::PARAM_INT);
+        $stmt->bindParam(':cantidad2', $cantidad, \PDO::PARAM_INT);
+        return $stmt->execute();
     }
 
     public static function aumentarStock(
@@ -79,8 +74,8 @@ class Platos extends Table
         return self::executeNonQuery(
             $sqlstr,
             [
-                "id" => $id,
-                "cantidad" => $cantidad
+                'id'       => $id,
+                'cantidad' => $cantidad
             ]
         );
     }

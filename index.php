@@ -1,15 +1,16 @@
 <?php
 use Utilities\Context;
 use Utilities\Site;
-
+ 
 require __DIR__ . '/vendor/autoload.php';
 session_start();
-
+ 
 try {
     Site::configure();
     $pageRequest = Site::getPageRequest();
     $instance = new $pageRequest();
     $instance->run();
+    unset($_SESSION['flash_msg']);
 } catch (\Controllers\PrivateNoAuthException $ex) {
     $instance = new \Controllers\NoAuth();
     $instance->run();
@@ -25,3 +26,4 @@ try {
     $instance = new \Controllers\Error();
     $instance->run();
 }
+ 

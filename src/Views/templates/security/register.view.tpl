@@ -3,13 +3,28 @@
     <div class="auth-card">
 
         <div class="auth-header">
-            <h1>Restaurante</h1>
+            <h1>Crear Cuenta</h1>
             <p>
-                Inicia sesión para gestionar tus pedidos.
+                Regístrate para realizar pedidos en línea.
             </p>
         </div>
 
         <form method="post">
+
+            <div class="auth-group">
+                <label for="nombre">
+                    Nombre Completo
+                </label>
+
+                <input
+                    id="nombre"
+                    type="text"
+                    name="nombre"
+                    value="{{nombre}}"
+                    placeholder="Ingrese su nombre"
+                    required
+                >
+            </div>
 
             <div class="auth-group">
                 <label for="email">
@@ -35,7 +50,7 @@
                     id="passwd"
                     type="password"
                     name="passwd"
-                    placeholder="Ingrese su contraseña"
+                    placeholder="Mínimo 8 caracteres"
                     required
                 >
             </div>
@@ -50,15 +65,15 @@
                 type="submit"
                 class="auth-btn"
             >
-                Iniciar Sesión
+                Crear Cuenta
             </button>
 
         </form>
 
         <div class="auth-footer">
-            <span>¿No tienes cuenta?</span>
-            <a href="index.php?page=Sec.Register">
-                Crear cuenta
+            <span>¿Ya tienes cuenta?</span>
+            <a href="index.php?page=Sec.Login">
+                Iniciar sesión
             </a>
         </div>
 

@@ -7,13 +7,14 @@ class Security
     private function __construct() {}
     private function __clone() {}
 
-    public static function login(int $userId, string $userName, string $userEmail): void
+public static function login(int $userId, string $userName, string $userEmail, string $userRol): void
     {
         $_SESSION['login'] = [
             'isLogged'  => true,
             'userId'    => $userId,
             'userName'  => $userName,
             'userEmail' => $userEmail,
+            'userRol'   => $userRol,
         ];
     }
 
@@ -26,6 +27,10 @@ class Security
     {
         return !empty($_SESSION['login']['isLogged']);
     }
+    public static function getUserRole(): string
+{
+    return $_SESSION['login']['userRol'] ?? '';
+}
 
     public static function getUser(): array|false
     {

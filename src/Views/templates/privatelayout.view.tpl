@@ -18,7 +18,6 @@
   <header>
     <input type="checkbox" class="menu_toggle" id="menu_toggle" />
     <label for="menu_toggle" class="menu_toggle_icon" aria-label="Abrir menú" role="button">
-      
       <span class="hmb dgn pt-1"></span>
       <span class="hmb hrz"></span>
       <span class="hmb dgn pt-2"></span>
@@ -55,6 +54,12 @@
   {{foreach EndScripts}}
     <script src="{{~BASE_DIR}}/{{this}}"></script>
   {{endfor EndScripts}}
+
+  {{if flash_msg}}
+<script>
+  alert("{{flash_msg}}");
+</script>
+{{endif flash_msg}}
 
 </body>
 </html>

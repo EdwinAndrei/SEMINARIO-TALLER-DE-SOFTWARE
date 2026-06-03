@@ -12,9 +12,7 @@ class CancelarPedido extends PublicController
     public function run(): void
     {
         if (!$this->isPostBack()) {
-            Site::redirectTo(
-                "index.php?page=Tracking_MisPedidos"
-            );
+            Site::redirectTo("index.php?page=Tracking_MisPedidos");
             return;
         }
 
@@ -22,26 +20,24 @@ class CancelarPedido extends PublicController
 
         $pedido = PedidosDAO::getPedidoById($pedidoId);
 
-        if (!$pedido || $pedido["estado"] !== "PEN") {
-            Site::redirectToWithMsg(
+        if (!$pedido || $pedido["estado"] !== "pendiente") {
+            Site::redirectTo(
                 "index.php?page=Tracking_MisPedidos",
-                "No se puede cancelar este pedido"
+                "No se puede cancelar este pedido."
             );
             return;
         }
 
-        PedidosDAO::cancelarPedido(
-            $pedidoId
-        );
+        PedidosDAO::cancelarPedido($pedidoId);
 
         PlatosDAO::aumentarStock(
             $pedido["plato_id"],
             $pedido["cantidad"]
         );
 
-        Site::redirectToWithMsg(
+        Site::redirectTo(
             "index.php?page=Tracking_MisPedidos",
-            "Pedido cancelado correctamente"
+            "Pedido cancelado correctamente."
         );
     }
 }

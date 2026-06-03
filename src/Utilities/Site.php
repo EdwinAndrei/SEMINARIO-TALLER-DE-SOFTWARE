@@ -23,7 +23,6 @@ class Site
         $pageRequest = $default;
 
         if (isset($_GET['page'])) {
-            // Convert dots/underscores/dashes to namespace separators
             $pageRequest = str_replace(['.', '_', '-'], '\\', $_GET['page']);
         }
 
@@ -33,8 +32,11 @@ class Site
         return 'Controllers\\' . $pageRequest;
     }
 
-    public static function redirectTo(string $url): void
+    public static function redirectTo(string $url, string $msg = ''): void
     {
+        if ($msg !== '') {
+            $_SESSION['flash_msg'] = $msg;
+        }
         header('Location: ' . $url);
         exit;
     }
@@ -46,7 +48,6 @@ class Site
         Context::setContext('ERROR_MSG', $ex->getMessage());
     }
 
-    /** Inject a <link> stylesheet into the layout head */
     public static function addLink(string $href): void
     {
         $links   = Context::getContextByKey('SiteLinks') ?: [];
@@ -54,7 +55,6 @@ class Site
         Context::setContext('SiteLinks', $links);
     }
 
-    /** Inject a <script> before </body> */
     public static function addEndScript(string $src): void
     {
         $scripts   = Context::getContextByKey('EndScripts') ?: [];

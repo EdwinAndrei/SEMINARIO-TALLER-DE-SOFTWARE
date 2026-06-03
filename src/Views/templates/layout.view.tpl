@@ -10,7 +10,6 @@
   <header>
     <input type="checkbox" class="menu_toggle" id="menu_toggle" />
     <label for="menu_toggle" class="menu_toggle_icon">
-      
       <div class="hmb dgn pt-1"></div>
       <div class="hmb hrz"></div>
       <div class="hmb dgn pt-2"></div>
@@ -33,5 +32,11 @@
   <footer>
     <p>&copy; {{CURRENT_YEAR}} {{SITE_TITLE}}</p>
   </footer>
+
+{{if flash_msg}}
+<script>
+  alert("{{flash_msg}}");
+</script>
+{{endif flash_msg}}
 </body>
 </html>

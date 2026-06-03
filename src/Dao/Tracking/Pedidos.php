@@ -1,9 +1,9 @@
 <?php
-
+ 
 namespace Dao\Tracking;
-
+ 
 use Dao\Table;
-
+ 
 class Pedidos extends Table
 {
     public static function insertPedido(
@@ -11,33 +11,35 @@ class Pedidos extends Table
         int $plato_id,
         int $cantidad
     ) {
-        $sqlstr = "
-            INSERT INTO pedidos
-            (
-                usuario_id,
-                plato_id,
-                cantidad,
-                estado
-            )
-            VALUES
-            (
-                :usuario_id,
-                :plato_id,
-                :cantidad,
-                'PEN'
-            );
-        ";
-
-        return self::executeNonQuery(
-            $sqlstr,
-            [
-                "usuario_id" => $usuario_id,
-                "plato_id" => $plato_id,
-                "cantidad" => $cantidad
-            ]
-        );
+        $conn = self::getConn();
+        $conn->beginTransaction();
+        try {
+            $stmt = $conn->prepare("
+                INSERT INTO pedidos (usuario_id, estado)
+                VALUES (:usuario_id, 'pendiente')
+            ");
+            $stmt->bindParam(':usuario_id', $usuario_id, \PDO::PARAM_INT);
+            $stmt->execute();
+ 
+            $pedido_id = (int) $conn->lastInsertId();
+ 
+            $stmt2 = $conn->prepare("
+                INSERT INTO pedido_platos (pedido_id, plato_id, cantidad)
+                VALUES (:pedido_id, :plato_id, :cantidad)
+            ");
+            $stmt2->bindParam(':pedido_id', $pedido_id, \PDO::PARAM_INT);
+            $stmt2->bindParam(':plato_id',  $plato_id,  \PDO::PARAM_INT);
+            $stmt2->bindParam(':cantidad',  $cantidad,  \PDO::PARAM_INT);
+            $stmt2->execute();
+ 
+            $conn->commit();
+            return $pedido_id;
+        } catch (\Exception $e) {
+            $conn->rollBack();
+            throw $e;
+        }
     }
-
+ 
     public static function getPedidosByUser(
         int $usuario_id
     ) {
@@ -45,69 +47,64 @@ class Pedidos extends Table
             SELECT
                 p.id,
                 p.usuario_id,
-                p.plato_id,
-                p.cantidad,
+                pp.plato_id,
+                pp.cantidad,
                 p.estado,
                 p.creado_en,
                 pl.nombre,
                 pl.precio
             FROM pedidos p
-            INNER JOIN platos pl
-                ON p.plato_id = pl.id
+            INNER JOIN pedido_platos pp ON pp.pedido_id = p.id
+            INNER JOIN platos pl ON pl.id = pp.plato_id
             WHERE p.usuario_id = :usuario_id
             ORDER BY p.creado_en DESC;
         ";
-
+ 
         return self::obtenerRegistros(
             $sqlstr,
-            [
-                "usuario_id" => $usuario_id
-            ]
+            ['usuario_id' => $usuario_id]
         );
     }
-
+ 
     public static function getPedidoById(
         int $id
     ) {
         $sqlstr = "
             SELECT
-                id,
-                usuario_id,
-                plato_id,
-                cantidad,
-                estado,
-                creado_en
-            FROM pedidos
-            WHERE id = :id
+                p.id,
+                p.usuario_id,
+                pp.plato_id,
+                pp.cantidad,
+                p.estado,
+                p.creado_en
+            FROM pedidos p
+            INNER JOIN pedido_platos pp ON pp.pedido_id = p.id
+            WHERE p.id = :id
             LIMIT 1;
         ";
-
+ 
         return self::obtenerUnRegistro(
             $sqlstr,
-            [
-                "id" => $id
-            ]
+            ['id' => $id]
         );
     }
-
+ 
     public static function cancelarPedido(
         int $id
     ) {
         $sqlstr = "
             UPDATE pedidos
-            SET estado = 'CAN'
+            SET estado = 'cancelado'
             WHERE id = :id
-            AND estado = 'PEN';
+            AND estado = 'pendiente';
         ";
-
+ 
         return self::executeNonQuery(
             $sqlstr,
-            [
-                "id" => $id
-            ]
+            ['id' => $id]
         );
     }
-
+ 
     public static function getLastInsertId()
     {
         return self::getConn()->lastInsertId();
