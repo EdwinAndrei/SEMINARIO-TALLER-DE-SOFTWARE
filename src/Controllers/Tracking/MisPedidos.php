@@ -25,6 +25,8 @@ class MisPedidos extends PublicController
 
         foreach ($this->pedidos as &$pedido) {
 
+            $pedido["total"] = number_format((float)$pedido["cantidad"] * (float)$pedido["precio"],2);
+
             switch ($pedido["estado"]) {
 
                 case "PEN":
