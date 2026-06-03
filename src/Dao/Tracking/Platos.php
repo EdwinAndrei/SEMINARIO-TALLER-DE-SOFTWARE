@@ -10,70 +10,78 @@ class Platos extends Table
     {
         $sqlstr = "
             SELECT
-                platoId,
-                platoNombre,
-                platoDescripcion,
-                platoPrecio,
-                platoStock,
-                platoEstado
+                id,
+                nombre,
+                descripcion,
+                precio,
+                stock,
+                disponible
             FROM platos
-            ORDER BY platoId DESC;
+            WHERE disponible = 1
+            ORDER BY nombre;
         ";
 
         return self::obtenerRegistros($sqlstr, []);
     }
 
-    public static function getById(int $platoId)
+    public static function getById(int $id)
     {
         $sqlstr = "
             SELECT
-                platoId,
-                platoNombre,
-                platoDescripcion,
-                platoPrecio,
-                platoStock,
-                platoEstado
+                id,
+                nombre,
+                descripcion,
+                precio,
+                stock,
+                disponible
             FROM platos
-            WHERE platoId = :platoId;
+            WHERE id = :id;
         ";
 
-        return self::obtenerUnRegistro($sqlstr, [
-            "platoId" => $platoId
-        ]);
+        return self::obtenerUnRegistro(
+            $sqlstr,
+            [
+                "id" => $id
+            ]
+        );
     }
 
-    /**
-     * Reducir stock al hacer pedido
-     */
-    public static function reducirStock(int $platoId, int $cantidad)
-    {
+    public static function reducirStock(
+        int $id,
+        int $cantidad
+    ) {
         $sqlstr = "
             UPDATE platos
-            SET platoStock = platoStock - :cantidad
-            WHERE platoId = :platoId
-            AND platoStock >= :cantidad;
+            SET stock = stock - :cantidad
+            WHERE id = :id
+            AND stock >= :cantidad;
         ";
 
-        return self::executeNonQuery($sqlstr, [
-            "platoId" => $platoId,
-            "cantidad" => $cantidad
-        ]);
+        return self::executeNonQuery(
+            $sqlstr,
+            [
+                "id" => $id,
+                "cantidad" => $cantidad
+            ]
+        );
     }
 
-    /**
-     * Aumentar stock (cancelación de pedido)
-     */
-    public static function aumentarStock(int $platoId, int $cantidad)
-    {
+    public static function aumentarStock(
+        int $id,
+        int $cantidad
+    ) {
         $sqlstr = "
             UPDATE platos
-            SET platoStock = platoStock + :cantidad
-            WHERE platoId = :platoId;
+            SET stock = stock + :cantidad
+            WHERE id = :id;
         ";
 
-        return self::executeNonQuery($sqlstr, [
-            "platoId" => $platoId,
-            "cantidad" => $cantidad
-        ]);
+        return self::executeNonQuery(
+            $sqlstr,
+            [
+                "id" => $id,
+                "cantidad" => $cantidad
+            ]
+        );
     }
 }

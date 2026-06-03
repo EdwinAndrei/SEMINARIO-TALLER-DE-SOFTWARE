@@ -6,135 +6,110 @@ use Dao\Table;
 
 class Pedidos extends Table
 {
-    /**
-     * Crear cabecera de pedido
-     */
-    public static function insertPedido(int $usercod)
-    {
+    public static function insertPedido(
+        int $usuario_id,
+        int $plato_id,
+        int $cantidad
+    ) {
         $sqlstr = "
             INSERT INTO pedidos
             (
-                usercod,
-                pedidoEstado
+                usuario_id,
+                plato_id,
+                cantidad,
+                estado
             )
             VALUES
             (
-                :usercod,
+                :usuario_id,
+                :plato_id,
+                :cantidad,
                 'PEN'
             );
         ";
 
-        return self::executeNonQuery($sqlstr, [
-            "usercod" => $usercod
-        ]);
+        return self::executeNonQuery(
+            $sqlstr,
+            [
+                "usuario_id" => $usuario_id,
+                "plato_id" => $plato_id,
+                "cantidad" => $cantidad
+            ]
+        );
     }
 
-    /**
-     * Insertar detalle del pedido
-     */
-    public static function insertDetallePedido(
-        int $pedidoId,
-        int $platoId,
-        int $cantidad,
-        float $precioUnitario
+    public static function getPedidosByUser(
+        int $usuario_id
     ) {
         $sqlstr = "
-            INSERT INTO pedidodetalle
-            (
-                pedidoId,
-                platoId,
+            SELECT
+                p.id,
+                p.usuario_id,
+                p.plato_id,
+                p.cantidad,
+                p.estado,
+                p.creado_en,
+                pl.nombre,
+                pl.precio
+            FROM pedidos p
+            INNER JOIN platos pl
+                ON p.plato_id = pl.id
+            WHERE p.usuario_id = :usuario_id
+            ORDER BY p.creado_en DESC;
+        ";
+
+        return self::obtenerRegistros(
+            $sqlstr,
+            [
+                "usuario_id" => $usuario_id
+            ]
+        );
+    }
+
+    public static function getPedidoById(
+        int $id
+    ) {
+        $sqlstr = "
+            SELECT
+                id,
+                usuario_id,
+                plato_id,
                 cantidad,
-                precioUnitario
-            )
-            VALUES
-            (
-                :pedidoId,
-                :platoId,
-                :cantidad,
-                :precioUnitario
-            );
-        ";
-
-        return self::executeNonQuery($sqlstr, [
-            "pedidoId" => $pedidoId,
-            "platoId" => $platoId,
-            "cantidad" => $cantidad,
-            "precioUnitario" => $precioUnitario
-        ]);
-    }
-
-    /**
-     * Obtener pedidos por usuario
-     */
-    public static function getPedidosByUser(int $usercod)
-    {
-        $sqlstr = "
-            SELECT
-                p.pedidoId,
-                pl.platoNombre,
-                pd.cantidad,
-                p.pedidoEstado,
-                p.pedidoFecha,
-                pd.precioUnitario,
-                pd.platoId
-            FROM pedidos p
-            INNER JOIN pedidodetalle pd ON p.pedidoId = pd.pedidoId
-            INNER JOIN platos pl ON pd.platoId = pl.platoId
-            WHERE p.usercod = :usercod
-            ORDER BY p.pedidoFecha DESC;
-        ";
-
-        return self::obtenerRegistros($sqlstr, [
-            "usercod" => $usercod
-        ]);
-    }
-
-    /**
-     * Obtener pedido por ID
-     */
-    public static function getPedidoById(int $pedidoId)
-    {
-        $sqlstr = "
-            SELECT
-                p.pedidoId,
-                p.usercod,
-                p.pedidoEstado,
-                pd.platoId,
-                pd.cantidad
-            FROM pedidos p
-            INNER JOIN pedidodetalle pd
-                ON p.pedidoId = pd.pedidoId
-            WHERE p.pedidoId = :pedidoId
+                estado,
+                creado_en
+            FROM pedidos
+            WHERE id = :id
             LIMIT 1;
         ";
 
-        return self::obtenerUnRegistro($sqlstr, [
-            "pedidoId" => $pedidoId
-        ]);
+        return self::obtenerUnRegistro(
+            $sqlstr,
+            [
+                "id" => $id
+            ]
+        );
     }
 
-    /**
-     * Último ID insertado
-     */
+    public static function cancelarPedido(
+        int $id
+    ) {
+        $sqlstr = "
+            UPDATE pedidos
+            SET estado = 'CAN'
+            WHERE id = :id
+            AND estado = 'PEN';
+        ";
+
+        return self::executeNonQuery(
+            $sqlstr,
+            [
+                "id" => $id
+            ]
+        );
+    }
+
     public static function getLastInsertId()
     {
         return self::getConn()->lastInsertId();
-    }
-
-    /**
-     * Cancelar pedido
-     */
-    public static function cancelarPedido(int $pedidoId)
-    {
-        $sql = "
-            UPDATE pedidos
-            SET pedidoEstado = 'CAN'
-            WHERE pedidoId = :pedidoId
-            AND pedidoEstado = 'PEN';
-        ";
-
-        return self::executeNonQuery($sql, [
-            "pedidoId" => $pedidoId
-        ]);
     }
 }
