@@ -10,6 +10,7 @@
                 <th>Plato</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
+                <th>Total</th>
                 <th>Estado</th>
                 <th>Fecha</th>
                 <th>Acción</th>
@@ -29,6 +30,8 @@
                 <td>{{cantidad}}</td>
 
                 <td>L. {{precio}}</td>
+                
+                <td>L. {{total}}</td>
 
                 <td class="{{estadoClass}}">
                     {{estadoDsc}}
