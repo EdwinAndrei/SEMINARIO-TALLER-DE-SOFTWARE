@@ -13,58 +13,60 @@ class Pedido extends PublicController
     public function run(): void
     {
         if (!$this->isPostBack()) {
-            Site::redirectTo("index.php?page=Tracking_Menu");
-            return;
-        }
-
-        $platoId = intval($_POST["platoId"] ?? 0);
-        $cantidad = intval($_POST["cantidad"] ?? 1);
-
-        $usercod = Security::getUserId();
-
-        if ($usercod <= 0) {
-            $usercod = 1; // ID del "Cliente Demo"
-        }
-
-        if ($platoId <= 0 || $cantidad <= 0) {
-            Site::redirectToWithMsg(
-                "index.php?page=Tracking_Menu",
-                "Datos inválidos."
+            Site::redirectTo(
+                "index.php?page=Tracking_Menu"
             );
             return;
         }
 
-        // 1. Validar stock primero
-        $plato = PlatosDAO::getById($platoId);
-
-        if (!$plato || $plato["platoStock"] < $cantidad) {
-            Site::redirectToWithMsg(
-                "index.php?page=Tracking_Menu",
-                "No hay suficiente stock."
-            );
-            return;
-        }
-
-        // 2. Crear pedido
-        PedidosDAO::insertPedido($usercod);
-
-        // 3. Obtener ID del pedido
-        $pedidoId = PedidosDAO::getLastInsertId();
-
-        // 4. Insertar detalle
-        PedidosDAO::insertDetallePedido(
-            $pedidoId,
-            $platoId,
-            $cantidad,
-            $plato["platoPrecio"]
+        $platoId = intval(
+            $_POST["platoId"] ?? 0
         );
 
-        // 5. Descontar stock
-        PlatosDAO::reducirStock($platoId, $cantidad);
+        $cantidad = intval(
+            $_POST["cantidad"] ?? 1
+        );
+
+        $usuario_id = Security::getUserId();
+
+        if ($usuario_id <= 0) {
+            $usuario_id = 3;
+        }
+
+        $plato = PlatosDAO::getById(
+            $platoId
+        );
+
+        if (!$plato) {
+            Site::redirectToWithMsg(
+                "index.php?page=Tracking_Menu",
+                "Plato no encontrado"
+            );
+            return;
+        }
+
+        if ($plato["stock"] < $cantidad) {
+            Site::redirectToWithMsg(
+                "index.php?page=Tracking_Menu",
+                "Stock insuficiente"
+            );
+            return;
+        }
+
+        PedidosDAO::insertPedido(
+            $usuario_id,
+            $platoId,
+            $cantidad
+        );
+
+        PlatosDAO::reducirStock(
+            $platoId,
+            $cantidad
+        );
 
         Site::redirectToWithMsg(
             "index.php?page=Tracking_MisPedidos",
-            "Pedido realizado correctamente."
+            "Pedido realizado correctamente"
         );
     }
 }

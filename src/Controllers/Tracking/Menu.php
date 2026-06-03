@@ -15,7 +15,8 @@ class Menu extends PublicController
         $this->platos = PlatosDAO::getAll();
 
         foreach ($this->platos as &$plato) {
-            $plato["platoDisponible"] = ($plato["platoStock"] > 0);
+            $plato["platoDisponible"] =
+                ($plato["stock"] > 0);
         }
 
         Renderer::render(

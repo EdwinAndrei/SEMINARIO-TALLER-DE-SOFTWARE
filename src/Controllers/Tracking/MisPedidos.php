@@ -13,54 +13,51 @@ class MisPedidos extends PublicController
 
     public function run(): void
     {
-        $usercod = Security::getUserId();
-        if ($usercod <= 0) {
-            $usercod = 1; // ID del "Cliente Demo"
+        $usuario_id = Security::getUserId();
+
+        if ($usuario_id <= 0) {
+            $usuario_id = 3;
         }
 
-        $this->pedidos = PedidosDAO::getPedidosByUser($usercod);
+        $this->pedidos = PedidosDAO::getPedidosByUser(
+            $usuario_id
+        );
 
         foreach ($this->pedidos as &$pedido) {
 
-            switch ($pedido["pedidoEstado"]) {
+            switch ($pedido["estado"]) {
 
                 case "PEN":
-                    $pedido["pedidoEstadoDsc"] = "Pendiente";
+                    $pedido["estadoDsc"] = "Pendiente";
                     $pedido["estadoClass"] = "estado-pendiente";
                     $pedido["puedeCancelar"] = true;
                     break;
 
                 case "PRO":
-                    $pedido["pedidoEstadoDsc"] = "En Proceso";
+                    $pedido["estadoDsc"] = "En Proceso";
                     $pedido["estadoClass"] = "estado-proceso";
                     $pedido["puedeCancelar"] = false;
                     break;
 
                 case "LIS":
-                    $pedido["pedidoEstadoDsc"] = "Listo";
+                    $pedido["estadoDsc"] = "Listo";
                     $pedido["estadoClass"] = "estado-listo";
                     $pedido["puedeCancelar"] = false;
                     break;
 
                 case "ENT":
-                    $pedido["pedidoEstadoDsc"] = "Entregado";
+                    $pedido["estadoDsc"] = "Entregado";
                     $pedido["estadoClass"] = "estado-entregado";
                     $pedido["puedeCancelar"] = false;
                     break;
 
                 case "CAN":
-                    $pedido["pedidoEstadoDsc"] = "Cancelado";
+                    $pedido["estadoDsc"] = "Cancelado";
                     $pedido["estadoClass"] = "estado-cancelado";
                     $pedido["puedeCancelar"] = false;
                     break;
-
-                default:
-                    $pedido["pedidoEstadoDsc"] = $pedido["pedidoEstado"];
-                    $pedido["puedeCancelar"] = false;
             }
         }
-
-        $pedido["puedeCancelar"] = ($pedido["pedidoEstado"] === "PEN");
 
         Renderer::render(
             "tracking/mispedidos",
