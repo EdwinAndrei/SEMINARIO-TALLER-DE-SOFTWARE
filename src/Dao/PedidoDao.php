@@ -1,30 +1,41 @@
 <?php
+
 namespace Dao;
 
 class PedidoDao extends Dao
 {
     public static function getAll(): array
     {
-        $stmt = self::getConn()->prepare('
-            SELECT p.*, pl.nombre as plato_nombre, u.nombre as cliente_nombre
-            FROM pedidos p
-            JOIN platos pl ON p.plato_id = pl.id
-            JOIN usuarios u ON p.usuario_id = u.id
-            ORDER BY p.creado_en ASC
-        ');
+        $stmt = self::getConn()->prepare("
+            SELECT p.id, p.estado, p.version, p.creado_en,
+        u.nombre as cliente_nombre,
+        GROUP_CONCAT(pl.nombre SEPARATOR ', ') as platos_nombres,
+        SUM(pp.cantidad) as total_items
+        FROM pedidos p
+        JOIN usuarios u ON p.usuario_id = u.id
+        JOIN pedido_platos pp ON pp.pedido_id = p.id
+        JOIN platos pl ON pp.plato_id = pl.id
+        GROUP BY p.id, p.estado, p.version, p.creado_en, u.nombre
+        ORDER BY p.creado_en ASC
+        ");
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
     public static function getById(int $id): array|false
     {
-        $stmt = self::getConn()->prepare('
-            SELECT p.*, pl.nombre as plato_nombre, u.nombre as cliente_nombre
-            FROM pedidos p
-            JOIN platos pl ON p.plato_id = pl.id
-            JOIN usuarios u ON p.usuario_id = u.id
-            WHERE p.id = :id
-        ');
+        $stmt = self::getConn()->prepare("
+        SELECT p.id, p.estado, p.version, p.creado_en,
+               u.nombre as cliente_nombre,
+               GROUP_CONCAT(pl.nombre SEPARATOR ', ') as platos_nombres,
+               SUM(pp.cantidad) as total_items
+        FROM pedidos p
+        JOIN usuarios u ON p.usuario_id = u.id
+        JOIN pedido_platos pp ON pp.pedido_id = p.id
+        JOIN platos pl ON pp.plato_id = pl.id
+        WHERE p.id = :id
+        GROUP BY p.id, p.estado, p.version, p.creado_en, u.nombre
+    ");
         $stmt->execute(['id' => $id]);
         return $stmt->fetch();
     }

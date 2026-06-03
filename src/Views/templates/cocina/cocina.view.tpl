@@ -17,9 +17,9 @@
         {{foreach pedidos}}
         <tr style="border-bottom:1px solid var(--border);">
           <td style="padding:.75rem 1rem; color:var(--text-muted);">{{id}}</td>
-          <td style="padding:.75rem 1rem;">{{plato_nombre}}</td>
+          <td style="padding:.75rem 1rem;">{{platos_nombres}}</td>
           <td style="padding:.75rem 1rem; color:var(--text-muted);">{{cliente_nombre}}</td>
-          <td style="padding:.75rem 1rem;">{{cantidad}}</td>
+          <td style="padding:.75rem 1rem;">{{total_items}}</td>
           <td style="padding:.75rem 1rem;">
             <span style="background:var(--bg-dark); border:1px solid var(--border); padding:.2rem .75rem; border-radius:2rem; font-size:.82rem;">{{estado}}</span>
           </td>
