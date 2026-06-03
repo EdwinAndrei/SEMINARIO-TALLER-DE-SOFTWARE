@@ -8,6 +8,12 @@
     ],
     "private": [
         {
+    "id": "Menu_Confirmar",
+    "nav_url": "index.php?page=Cocina.ConfirmarPedido",
+    "nav_label": "Confirmar Pedidos",
+    "roles": ["cocina", "admin"]
+        },
+        {
             "id": "Menu_Cocina",
             "nav_url": "index.php?page=Cocina.Cocina",
             "nav_label": "Cocina",

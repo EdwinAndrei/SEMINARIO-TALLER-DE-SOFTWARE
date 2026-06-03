@@ -44,7 +44,7 @@
     {{endwith login}}
   </header>
 
-  <main>
+ <main class="{{mainClass}}">
     {{{page_content}}}
   </main>
 
