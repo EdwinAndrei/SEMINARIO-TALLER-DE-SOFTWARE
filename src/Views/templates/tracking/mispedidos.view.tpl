@@ -1,17 +1,18 @@
-<h1>Mis Pedidos</h1>
+<section class="pedidos-page">
 
-<section class="WWList">
+    <h1>Mis Pedidos</h1>
 
     <table class="caps-products-table">
 
         <thead>
             <tr>
-                <th>Acción</th>
                 <th>ID</th>
                 <th>Plato</th>
                 <th>Cantidad</th>
+                <th>Precio</th>
                 <th>Estado</th>
                 <th>Fecha</th>
+                <th>Acción</th>
             </tr>
         </thead>
 
@@ -20,29 +21,35 @@
             {{foreach pedidos}}
 
             <tr>
-                <td>
-                    {{if puedeCancelar}}
-                    <form action="index.php?page=Tracking_CancelarPedido" method="POST">
-                        <input type="hidden" name="pedidoId" value="{{pedidoId}}" />
 
-                        <button type="submit">
-                            Cancelar
-                        </button>
-                    </form>
-                    {{endif puedeCancelar}}
-                </td>
+                <td>{{id}}</td>
 
-                <td>{{pedidoId}}</td>
-
-                <td>{{platoNombre}}</td>
+                <td>{{nombre}}</td>
 
                 <td>{{cantidad}}</td>
 
+                <td>L. {{precio}}</td>
+
                 <td class="{{estadoClass}}">
-                    {{pedidoEstadoDsc}}
+                    {{estadoDsc}}
                 </td>
 
-                <td>{{pedidoFecha}}</td>
+                <td>{{creado_en}}</td>
+
+                <td>
+
+                    {{if puedeCancelar}}
+
+                    <form action="index.php?page=Tracking_CancelarPedido" method="POST">
+
+                        <input type="hidden" name="pedidoId" value="{{id}}" />
+                        <button type="submit">Cancelar</button>
+
+                    </form>
+
+                    {{endif puedeCancelar}}
+
+                </td>
 
             </tr>
 
@@ -52,21 +59,21 @@
 
     </table>
 
-
     <div class="row my-4 flex-end">
-        <button type="button" id="btnRegresar" class="caps-secondary-btn">
-            Regresar
-        </button>
+
+        <button type="button" id="btnRegresar" class="caps-secondary-btn">Volver al Menú </button>
+
     </div>
+
 </section>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("btnRegresar")
-            .addEventListener("click", () => {
-                window.location.assign(
-                    "index.php?page=Tracking_Menu"
-                );
-            });
-    });
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("btnRegresar")
+        .addEventListener("click", () => {
+            window.location.assign(
+                "index.php?page=Tracking_Menu"
+            );
+        });
+});
 </script>
