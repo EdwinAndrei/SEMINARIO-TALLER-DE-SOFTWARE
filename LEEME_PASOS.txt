@@ -1,0 +1,51 @@
+PASOS PARA DANNY - PARTE 5 ESTADO
+
+OPCION A: PARA VERLO EN XAMPP
+
+1. Copia la carpeta:
+   EstadoModulo_Para_Ver_en_XAMPP
+
+2. Pegala en:
+   C:\xampp\htdocs\
+
+3. Abre XAMPP y enciende Apache.
+
+4. En el navegador entra a:
+   http://localhost/EstadoModulo_Para_Ver_en_XAMPP/estado.php
+
+5. Toma capturas de pantalla como evidencia visual.
+
+
+OPCION B: PARA QUE TUS COMPANEROS LO UNAN AL PROYECTO
+
+Copia estos 3 archivos:
+
+1. Archivos_Para_Integrar_Al_Proyecto/src/Controllers/EstadoController.php
+   pegar en:
+   src/Controllers/EstadoController.php
+
+2. Archivos_Para_Integrar_Al_Proyecto/src/Dao/EstadoDAO.php
+   pegar en:
+   src/Dao/EstadoDAO.php
+
+3. Archivos_Para_Integrar_Al_Proyecto/src/Views/estado.php
+   pegar en:
+   src/Views/estado.php
+
+
+IMPORTANTE:
+Este modulo usa:
+- PedidoDao::getAll()
+- PedidoDao::actualizarEstado()
+
+Estados:
+- pendiente
+- en_proceso
+- listo
+- entregado
+
+MENSAJE PARA TU GRUPO:
+
+Ya hice la parte 5 Estado. Les mando los 3 archivos:
+EstadoController.php, EstadoDAO.php y estado.php.
+Tambien hice una version aparte para verla en XAMPP como evidencia visual.
