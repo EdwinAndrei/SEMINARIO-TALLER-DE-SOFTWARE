@@ -1,5 +1,11 @@
 <section>
-  <h1 style="font-family:'Playfair Display',serif; font-size:2rem; margin-bottom:1.5rem;">Panel de Cocina</h1>
+  <h1 style="font-family:'Playfair Display',serif; font-size:2rem; margin-bottom:1.5rem; padding-top:2rem;">Panel de Cocina</h1>
+
+  {{if error}}
+  <div style="background:rgba(235,94,48,.15); color:var(--tomato); border-left:3px solid var(--tomato); padding:.75rem 1.25rem; border-radius:6px; margin-bottom:1.5rem; font-weight:600;">
+    ⚠ Conflicto de concurrencia: este pedido fue modificado por otro operador. Los datos han sido actualizados.
+  </div>
+  {{endif error}}
 
   <div style="overflow-x:auto;">
     <table style="width:100%; border-collapse:collapse; background:var(--bg-surface); border-radius:8px; overflow:hidden;">

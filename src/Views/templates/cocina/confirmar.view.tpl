@@ -14,6 +14,12 @@ main { padding: 0 !important; max-width: 100% !important; }
     <div class="confirmar-success">✔ {{flash_msg}}</div>
     {{endif flash_msg}}
 
+    {{if error}}
+    <div style="background:rgba(235,94,48,.15); color:var(--tomato); border-left:3px solid var(--tomato); padding:.75rem 1.25rem; border-radius:6px; margin-bottom:1.5rem; font-weight:600; text-align:left;">
+      ⚠ Conflicto de concurrencia: este pedido fue modificado por otro operador. Los datos han sido actualizados.
+    </div>
+    {{endif error}}
+
     <table class="confirmar-table">
       <thead>
         <tr>

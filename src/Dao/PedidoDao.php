@@ -4,7 +4,7 @@ namespace Dao;
  
 class PedidoDao extends Dao
 {
-    // Active orders — excludes pendiente (those go to confirmation page)
+   
     public static function getAll(): array
     {
         $stmt = self::getConn()->prepare("
@@ -24,7 +24,6 @@ class PedidoDao extends Dao
         return $stmt->fetchAll();
     }
  
-    // Pending orders waiting for kitchen confirmation
     public static function getPendientes(): array
     {
         $stmt = self::getConn()->prepare("
@@ -92,19 +91,35 @@ class PedidoDao extends Dao
         return $stmt->fetchAll();
     }
  
+
     public static function actualizarEstado(int $id, string $nuevoEstado, int $version): bool
     {
-        $stmt = self::getConn()->prepare('
-            UPDATE pedidos
-            SET estado = :estado, version = version + 1
-            WHERE id = :id AND version = :version
-        ');
-        $stmt->execute([
-            'estado'  => $nuevoEstado,
-            'id'      => $id,
-            'version' => $version
-        ]);
-        return $stmt->rowCount() > 0;
+        $conn = self::getConn();
+        $conn->beginTransaction();
+        try {
+           
+            $check = $conn->prepare('
+                SELECT version, estado FROM pedidos WHERE id = :id FOR UPDATE
+            ');
+            $check->execute(['id' => $id]);
+            $pedido = $check->fetch();
+ 
+            if (!$pedido || (int)$pedido['version'] !== $version) {
+                $conn->rollBack();
+                return false; // Conflict detected
+            }
+ 
+            $stmt = $conn->prepare('
+                UPDATE pedidos
+                SET estado = :estado, version = version + 1
+                WHERE id = :id
+            ');
+            $stmt->execute(['estado' => $nuevoEstado, 'id' => $id]);
+            $conn->commit();
+            return true;
+        } catch (\Exception $e) {
+            $conn->rollBack();
+            throw $e;
+        }
     }
 }
- 
