@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{SITE_TITLE}}</title>
-  <link rel="stylesheet" href="{{BASE_DIR}}public/css/style.css">
+  <link rel="stylesheet" href="{{BASE_DIR}}/public/css/style.css">
   {{foreach SiteLinks}}
     <link rel="stylesheet" href="{{~BASE_DIR}}{{this}}">
   {{endfor SiteLinks}}
